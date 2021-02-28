@@ -15,27 +15,24 @@ The easiet way to install *eudract-py* is to use pip:
 
 ### Search for trials  
 
-Search clinical trials. Return list of EUDRACT id
+Search clinical trials and return summary or full protocol details.
 
 ```python
-import eudract_py
+from eudract import Eudract
 
-search_trials("EFC14280")
+eu = Eudract()
 
-search_trials() # return all EUDRACT id
+eu.search_trials("EFC14280")
+
+search_trials() # return all EUDRACT protocols
 
 ```
 
-### Get clinical trial info
 
-Get clinical trial info as json or plain text.
+## Issues
 
-```python
-import eudract_py
+Report issue [here]([https://github.com/PaulinCharliquart/eudract-py/issues).
 
-full_summary("EFC14280", "text") # get plain text
-
-full_summary("EFC14280", "json") # get json
 
 
 
