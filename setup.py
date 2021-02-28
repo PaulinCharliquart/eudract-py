@@ -3,8 +3,8 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-setup(name='eudract',
-      version='0.1',
+setup(name='eudract-py',
+      version='1.0.0',
       description='Find clinical trials info on EUDRACT',
       url='http://github.com/PaulinCharliquart/eudract-py',
       author='Paulin Charliquart',

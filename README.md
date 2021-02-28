@@ -31,7 +31,7 @@ eu.search() # return all EUDRACT protocols
 
 ## Issues
 
-Report issue [here]([https://github.com/PaulinCharliquart/eudract-py/issues).
+Report issue [here](https://github.com/PaulinCharliquart/eudract-py/issues).
 
 
 
