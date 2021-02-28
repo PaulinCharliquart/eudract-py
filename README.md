@@ -22,9 +22,9 @@ from eudract import Eudract
 
 eu = Eudract()
 
-eu.search_trials("EFC14280")
+eu.search("EFC14280")
 
-search_trials() # return all EUDRACT protocols
+eu.search() # return all EUDRACT protocols
 
 ```
 
