@@ -1,6 +1,6 @@
 # eudract-py
 
-A simple python package to search for clinical trials in EUDRACT database.
+A simple python package to search for clinical trials in [EUDRACT](https://www.clinicaltrialsregister.eu/about.html).
 
 
 ## Installation
@@ -22,7 +22,12 @@ from eudract import Eudract
 
 eu = Eudract()
 
-eu.search("EFC14280")
+eu.search("EFC14280", "summary", "text") # return trial summary in plain text format
+
+eu.search("EFC14280", "summary", "json") # return trial summary in json
+
+eu.search("covid", "summary", "json") # return all trial summaries with covid term in json
+
 
 eu.search() # return all EUDRACT protocols
 
@@ -35,4 +40,6 @@ Report issue [here](https://github.com/PaulinCharliquart/eudract-py/issues).
 
 
 
+## Contributing
 
+Any contribution is welcome!
