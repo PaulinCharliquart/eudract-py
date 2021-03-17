@@ -1,11 +1,11 @@
 # eudract-py
 
-A simple python package to search for clinical trials in [EUDRACT](https://www.clinicaltrialsregister.eu/about.html).
+Eudract-py is a Python library for searching clinical trials on [EUDRACT](https://www.clinicaltrialsregister.eu/about.html).
 
 
 ## Installation
 
-The easiet way to install *eudract-py* is to use pip:
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install eudract-py:
 
 ```pip install eudract-py```
 
@@ -22,17 +22,27 @@ from eudract import Eudract
 
 eu = Eudract()
 
-eu.search("EFC14280", "summary", "text") # return trial summary in plain text format
+eu.search("EFC14280", "summary") # return trial summary in plain text format
 
-eu.search("EFC14280", "summary", "json") # return trial summary in json
+eu.search("EFC14280", "summary", True) # return trial summary in dict
 
-eu.search("covid", "summary", "json") # return all trial summaries with covid term in json
-
-
-eu.search() # return all EUDRACT protocols
+eu.search("covid", "full", True) # return all trial full details with covid term in array of dict
 
 ```
 
+### Trial info
+Get info for a trial by eudract id.
+
+```python
+from eudract import Eudract
+
+eu = Eudract()
+
+eu.info("2015-001314-10", "summary", False) # return trial summary in plain text format
+
+eu.info("2015-001314-10", "full", True) # return trial full in dict
+
+```
 
 ## Issues
 
@@ -42,4 +52,10 @@ Report issue [here](https://github.com/PaulinCharliquart/eudract-py/issues).
 
 ## Contributing
 
-Any contribution is welcome!
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
