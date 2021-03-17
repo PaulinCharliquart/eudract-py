@@ -1,3 +1,6 @@
+[![PyPI version](https://badge.fury.io/py/eudract-py.svg)](https://badge.fury.io/py/eudract-py)
+[![GitHub license](https://img.shields.io/github/license/PaulinCharliquart/eudract-py)](https://github.com/PaulinCharliquart/eudract-py/blob/main/LICENSE)
+
 # eudract-py
 
 Eudract-py is a Python library for searching clinical trials on [EUDRACT](https://www.clinicaltrialsregister.eu/about.html).
