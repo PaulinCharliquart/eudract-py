@@ -1,9 +1,15 @@
 from eudract.utils import create_connection, create_table, write_cache, read_cache
+import pytest
 
 
 def test_db_create():
     db = create_connection("e")
     assert db != None
+
+
+def test_db_create_failed():
+    with pytest.raises(Exception) as e:
+        assert create_connection()
 
 
 def test_db_create_table():
@@ -19,7 +25,7 @@ def test_write_cache():
     assert res == True
 
 
-def test_write_cache():
+def test_read_cache():
     db = create_connection("e2")
     create_table(db)
     write_cache(db, "x1", "test")

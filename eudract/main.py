@@ -7,9 +7,7 @@ The core module of eudract-py
 import requests
 import re
 from urllib.parse import urljoin
-import re
 from bs4 import BeautifulSoup
-from pathlib import Path
 import json
 from eudract.utils import read_cache, write_cache, create_connection, create_table
 
@@ -95,6 +93,7 @@ class Eudract:
             r = requests.get(
                 self._SEARCH, params={"query": query, "page": page_id[0]}, verify=False
             )
+            r.raise_for_status
             next_page = re.findall(
                 r"(?<=href=\").*?(?=\"\saccesskey=\"n\">\s*Next)", r.text
             )
@@ -145,9 +144,11 @@ class Eudract:
                 full_url = re.findall(
                     r"ctr-search/trial/{}/[A-Z][A-Z]".format(eudract), r.text
                 )
+                r.raise_for_status
                 r_full = requests.get(
                     urljoin(self._BASE_URL, full_url[0]), verify=False
                 )
+                r.raise_for_status
                 data = self.json_handler(r_full.text, level)
             else:
                 r = requests.get(
@@ -155,6 +156,7 @@ class Eudract:
                     params={"mode": "selected", "eudracts": eudract},
                     verify=False,
                 )
+                r.raise_for_status
                 data = r.text
 
         if cache_file:
@@ -162,5 +164,18 @@ class Eudract:
             write_cache(db, key_id, content)
         return data
 
-    def dump(self, level="summary", to_dict=False):
-        return self.search(query="", level=level, to_dict=to_dict, size=None)
+    def dump(self, level="summary", to_dict=False, cache_file=None):
+        """
+        Dump eudract
+
+        Args:
+            level (str): type of info to extract (either summary or full)
+            to_dict (Bool): Return the results as dict
+            cache_file (str): Set cache filename to save results to sqlite db
+
+        Returns:
+            [dict]: dictionary
+        """
+        return self.search(
+            query="", level=level, to_dict=to_dict, cache_file=cache_file
+        )
