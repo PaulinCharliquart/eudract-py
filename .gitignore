@@ -8,5 +8,10 @@
 /*.egg-info
 /*.egg
 
+# virtualenv
+venv
 
-/venv
+# build
+build
+
+.coverage
