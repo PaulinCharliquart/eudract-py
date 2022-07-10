@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(name='eudract-py',
-      version='1.1.0',
+      version='1.2.0',
       description='Eudract-py is a Python library for searching clinical trials on EUDRACT',
       url='http://github.com/PaulinCharliquart/eudract-py',
       author='Paulin Charliquart',
