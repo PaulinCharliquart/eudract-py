@@ -1,0 +1,30 @@
+name: Fetch data
+
+on:
+  schedule:
+    - cron: "0 0 1 * *"
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' 
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+      - name: Fetch data
+        uses: actions/checkout@v3
+        run: |
+          python -c "from eudract import Eudract;eu = Eudract();eu.dump("summary", True, "summary.db")"
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "generated"
+          git push
+

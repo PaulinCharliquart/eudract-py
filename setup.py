@@ -28,6 +28,9 @@ setup(name='eudract-py',
       install_requires=[
           'requests', 'bs4'
       ],
+      extras_require={
+        "dev": ["black", "pytest", "flake8"],
+        },
       include_package_data=True,
       zip_safe=False
       )
