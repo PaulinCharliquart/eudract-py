@@ -19,7 +19,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install .
       - name: Fetch data
-        uses: actions/checkout@v3
         run: |
           python -c "from eudract import Eudract;eu = Eudract();eu.dump("summary", True, "summary.db")"
           git config user.name github-actions
