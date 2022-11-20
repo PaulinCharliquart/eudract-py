@@ -19,7 +19,7 @@ jobs:
           pip install .
       - name: Fetch data
         run: |
-          python -c "from eudract import Eudract;eu = Eudract();eu.dump("summary", True, "summary.db")"
+          python -c 'from eudract import Eudract;eu = Eudract();eu.dump("summary", True, "summary.db")'
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
