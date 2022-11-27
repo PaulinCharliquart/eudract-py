@@ -29,7 +29,7 @@ setup(name='eudract-py',
           'requests', 'bs4'
       ],
       extras_require={
-        "dev": ["black", "pytest", "flake8"],
+        "dev": ["black", "pytest", "flake8", "furo", "sphinx", "myst-parser"],
         },
       include_package_data=True,
       zip_safe=False

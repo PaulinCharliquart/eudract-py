@@ -15,3 +15,7 @@ venv
 /build
 
 .coverage
+
+
+# docs 
+docs/build
