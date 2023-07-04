@@ -22,12 +22,14 @@ def test_search():
 
 def test_info():
     eu = Eudract()
-    assert eu.info("jffs") == ""
+    assert eu.info("jffs") == None
     x = eu.info("2015-001314-10", "summary", False)
     x = x.replace("\r", "").replace("\n", "")
     assert x == Path("tests/data/one_study_summary.txt").read_text()
     x = eu.info("2015-001314-10", "summary", True)
     assert json.dumps(x) == Path("tests/data/one_study_summary.json").read_text()
+    assert eu.info("fake_id", "summary", to_dict=True) is None
+    assert eu.info("2021-123456-12", "summary", to_dict=True) is None
 
 
 def test_info_full():
@@ -37,6 +39,8 @@ def test_info_full():
     assert x == Path("tests/data/one_study_full.txt").read_text()
     x = eu.info("2015-001314-10", "full", to_dict=True)
     assert json.dumps(x) == Path("tests/data/one_study_full.json").read_text()
+    assert eu.info("fake_id", "full", to_dict=True) is None
+    assert eu.info("2021-123456-12", "full", to_dict=True) is None
 
 
 def test_search_cache():

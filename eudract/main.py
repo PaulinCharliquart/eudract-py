@@ -9,7 +9,13 @@ import re
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 import json
-from eudract.utils import read_cache, write_cache, create_connection, create_table
+from eudract.utils import (
+    read_cache,
+    write_cache,
+    create_connection,
+    create_table,
+    validate_id,
+)
 
 
 class Eudract:
@@ -118,6 +124,8 @@ class Eudract:
         Returns:
             [dict]: dictionary
         """
+        if validate_id(eudract_id=eudract) is False:
+            return None
         if cache_file:
             db = create_connection(cache_file)
             key_id = "_".join([eudract, level, str(to_dict)]).lower()
@@ -133,6 +141,8 @@ class Eudract:
                 params={"mode": "selected", "eudracts": eudract},
                 verify=False,
             )
+            if r.text == "":
+                return None
             if to_dict:
                 data = self.json_handler(r.text, level)
             else:
@@ -145,6 +155,8 @@ class Eudract:
                     r"ctr-search/trial/{}/[A-Z][A-Z]".format(eudract), r.text
                 )
                 r.raise_for_status
+                if len(full_url) == 0:
+                    return None
                 r_full = requests.get(
                     urljoin(self._BASE_URL, full_url[0]), verify=False
                 )
