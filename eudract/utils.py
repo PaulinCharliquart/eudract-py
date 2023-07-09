@@ -3,7 +3,7 @@ import re
 from datetime import datetime
 
 
-def create_connection(db_file):
+def create_connection(db_file: str):
     conn = None
     try:
         conn = sqlite3.connect(db_file)
@@ -56,7 +56,7 @@ def read_cache(conn, key):
     return res
 
 
-def validate_id(eudract_id):
+def validate_id(eudract_id: str):
     """
     Validate Eudract Id
     """
@@ -66,7 +66,7 @@ def validate_id(eudract_id):
     today_year = datetime.now().year
     try:
         eudract_year = int(eudract_id[0:4])
-    except:
+    except ValueError:
         eudract_year = 0
     if eudract_year not in range(2000, today_year):
         return False

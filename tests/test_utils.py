@@ -16,7 +16,7 @@ def test_db_create():
 
 
 def test_db_create_failed():
-    with pytest.raises(Exception) as e:
+    with pytest.raises(Exception):
         assert create_connection()
 
 

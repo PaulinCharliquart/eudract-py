@@ -9,6 +9,7 @@ import re
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 import json
+from warnings import warn
 from eudract.utils import (
     read_cache,
     write_cache,
@@ -52,7 +53,7 @@ class Eudract:
             ],
         }
 
-    def json_handler(self, doc, level):
+    def json_handler(self, doc, level: str):
         data = dict.fromkeys(self._SCHEMA[level], "")
         if level == "summary":
             for k in data.keys():
@@ -78,7 +79,9 @@ class Eudract:
 
         return data
 
-    def search(self, query, level="summary", to_dict=False, size=None, cache_file=None):
+    def search(
+        self, query: str, level="summary", to_dict=False, size=None, cache_file=None
+    ):
         """
         Search studies in Eudract
 
@@ -94,6 +97,12 @@ class Eudract:
         """
         next_page = ["&page=1"]
         ids = []
+        if to_dict is False:
+            warn(
+                "to_dict will be removed in the next version. Results will be returned only as dict.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         while next_page:
             page_id = re.findall(r"\d+", next_page[0])
             r = requests.get(
@@ -104,14 +113,13 @@ class Eudract:
                 r"(?<=href=\").*?(?=\"\saccesskey=\"n\">\s*Next)", r.text
             )
             ids += list(set(re.findall(r"20\d{2}-\d{6}-\d{2}", r.text)))
-            if size is not None:
-                if len(ids) >= size:
-                    ids = ids[:size]
-                    break
+            if size is not None and len(ids) >= size:
+                ids = ids[:size]
+                break
         data = [self.info(el, level, to_dict, cache_file) for el in ids]
         return data
 
-    def info(self, eudract, level="summary", to_dict=False, cache_file=None):
+    def info(self, eudract: str, level="summary", to_dict=False, cache_file=None):
         """
         Get info for a study
 
@@ -124,6 +132,12 @@ class Eudract:
         Returns:
             [dict]: dictionary
         """
+        if to_dict is False:
+            warn(
+                "to_dict will be removed in the next version. Results will be returned only as dict.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         if validate_id(eudract_id=eudract) is False:
             return None
         if cache_file:
@@ -188,6 +202,12 @@ class Eudract:
         Returns:
             [dict]: dictionary
         """
+        if to_dict is False:
+            warn(
+                "to_dict will be removed in the next version. Results will be returned only as dict.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         return self.search(
             query="", level=level, to_dict=to_dict, cache_file=cache_file
         )
