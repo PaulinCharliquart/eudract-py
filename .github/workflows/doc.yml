@@ -47,7 +47,7 @@ jobs:
           tag_version=${{ github.ref_name}}
           tag_version="${tag_version:1}"
           echo "building doc for $tag_version"
-          cp -R docs/build/html 
+          cp -R docs/build/html $tag_version
           git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
           git config --global user.email "eudract@users.noreply.github.com"
           git add --all $tag_version
