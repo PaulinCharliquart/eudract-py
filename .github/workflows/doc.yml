@@ -12,8 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python
-      uses: actions/setup-python@v4
+    - uses: actions/setup-python@v4
       with:
         python-version: "3.x"
     - name: Install dependencies
@@ -25,14 +24,30 @@ jobs:
         cp CHANGELOG.md docs/source/changelog.md
         cd docs
         make html
-    - name: add and push
-      run: |
-        tag_version=${{ github.ref_name}}
-        tag_version="${tag_version:1}"
-        echo "building doc for $tag_version"
-        cp -R docs/build/html $tag_version
-        git config --global user.name "${GITHUB_ACTOR}"
-        git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
-        git add --all $tag_version
-        git commit -m "new doc for $tag_version"
-        git push
+    - uses: actions/upload-artifact@v3
+      with:
+        name: docs
+        path: docs/build/html
+  publish-doc:
+    name: commit doc on gh-pages branch
+    runs-on: ubuntu-latest
+    needs: generate-doc
+    steps:
+      - uses: actions/checkout@v3
+        with:
+         ref: gh-pages
+      - uses: actions/download-artifact@v3
+        with:
+          name: docs
+          path: docs
+      - name: add and push
+        run: |
+          tag_version=${{ github.ref_name}}
+          tag_version="${tag_version:1}"
+          echo "building doc for $tag_version"
+          mv -R docs $tag_version
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
+          git add --all $tag_version
+          git commit -m "new doc for $tag_version"
+          git push
