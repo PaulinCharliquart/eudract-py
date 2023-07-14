@@ -5,6 +5,7 @@ eudract-py
    install
    examples
    reference
+   changelog
    :maxdepth: 3
 
 

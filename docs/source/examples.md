@@ -6,7 +6,7 @@
 from eudract import Eudract
 eu = Eudract()
 
-# return all trials with full details for "covid" in array of dict
+# return all trials with full details for "covid" in list of dictionary
 eu.search("covid", "full", True, size=10) 
 
 ```

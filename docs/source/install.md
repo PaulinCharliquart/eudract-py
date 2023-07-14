@@ -13,5 +13,5 @@ pip install eudract-py
 ```
 git clone https://github.com/PaulinCharliquart/eudract-py.git
 cd eudract-py
-python setup install
+python setup install dev
 ```

@@ -19,3 +19,7 @@ venv
 
 # docs 
 docs/build
+docs/source/changelog.md
+
+# database
+*.db

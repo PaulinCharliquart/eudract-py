@@ -22,12 +22,14 @@ def test_search():
 
 def test_info():
     eu = Eudract()
-    assert eu.info("jffs") == ""
+    assert eu.info("jffs") is None
     x = eu.info("2015-001314-10", "summary", False)
     x = x.replace("\r", "").replace("\n", "")
     assert x == Path("tests/data/one_study_summary.txt").read_text()
     x = eu.info("2015-001314-10", "summary", True)
     assert json.dumps(x) == Path("tests/data/one_study_summary.json").read_text()
+    assert eu.info("fake_id", "summary", to_dict=True) is None
+    assert eu.info("2021-123456-12", "summary", to_dict=True) is None
 
 
 def test_info_full():
@@ -37,13 +39,15 @@ def test_info_full():
     assert x == Path("tests/data/one_study_full.txt").read_text()
     x = eu.info("2015-001314-10", "full", to_dict=True)
     assert json.dumps(x) == Path("tests/data/one_study_full.json").read_text()
+    assert eu.info("fake_id", "full", to_dict=True) is None
+    assert eu.info("2021-123456-12", "full", to_dict=True) is None
 
 
 def test_search_cache():
     tmp = tempfile.NamedTemporaryFile(delete=False)
     db_file = tmp.name
     eu = Eudract()
-    x = eu.search("covid", size=10, to_dict=True, cache_file=db_file)
+    eu.search("covid", size=10, to_dict=True, cache_file=db_file)
     conn = sqlite3.connect(db_file)
     cur = conn.cursor()
     cur.execute(
@@ -51,7 +55,7 @@ def test_search_cache():
     )
     rows = cur.fetchone()[0]
     assert rows == 10
-    x = eu.search("covid", size=10, to_dict=False, cache_file=db_file)
+    eu.search("covid", size=10, to_dict=False, cache_file=db_file)
     cur.execute(
         """ SELECT COUNT(*) from results """,
     )
@@ -63,7 +67,7 @@ def test_info_cache():
     tmp = tempfile.NamedTemporaryFile(delete=False)
     db_file = tmp.name
     eu = Eudract()
-    x = eu.search("EFC14280", "summary", to_dict=True, cache_file=db_file)
+    eu.search("EFC14280", "summary", to_dict=True, cache_file=db_file)
     conn = sqlite3.connect(db_file)
     cur = conn.cursor()
     cur.execute(
@@ -71,16 +75,12 @@ def test_info_cache():
     )
     rows = cur.fetchone()[0]
     assert rows == 1
-    x = eu.search("EFC14280", "summary", to_dict=False, cache_file=db_file)
+    eu.search("EFC14280", "summary", to_dict=False, cache_file=db_file)
     cur.execute(
         """ SELECT COUNT(*) from results """,
     )
     rows = cur.fetchone()[0]
     assert rows == 2
-
-
-def test_info_cache():
-    eu = Eudract()
-    x = eu.search("EFC14280", "full", to_dict=True, cache_file="test.db")
-    y = eu.search("EFC14280", "full", to_dict=True, cache_file="test.db")
+    x = eu.search("EFC14280", "full", to_dict=True, cache_file=db_file)
+    y = eu.search("EFC14280", "full", to_dict=True, cache_file=db_file)
     assert x == y
