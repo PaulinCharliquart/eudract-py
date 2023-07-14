@@ -8,7 +8,7 @@ on:
 
 jobs:
   generate-doc:
-    name: Build and publish Python distributions to PyPI and TestPyPI
+    name: Build and publish Eudract documentation
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
