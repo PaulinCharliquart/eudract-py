@@ -44,7 +44,7 @@ jobs:
           name: documentation
       - name: add and push
         run: |
-          tag_version = ${{ github.ref_name}}
+          tag_version=${{ github.ref_name}}
           tag_version="${tag_version:1}"
           echo "building doc for $tag_version"
           cp -R docs/build/html 
