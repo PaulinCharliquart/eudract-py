@@ -28,7 +28,7 @@ setup(
     },
     install_requires=["requests", "bs4"],
     extras_require={
-        "dev": ["black", "pytest", "flake8", "furo", "sphinx", "myst-parser"],
+        "dev": ["black", "pytest", "flake8", "furo", "sphinx", "myst-parser", "sphinx_copybutton"],
     },
     include_package_data=True,
     zip_safe=False,

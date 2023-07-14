@@ -45,6 +45,7 @@ jobs:
           tag_version=${{ github.ref_name}}
           tag_version="${tag_version:1}"
           echo "building doc for $tag_version"
+          rm -f -R $tag_version
           mv docs $tag_version
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
