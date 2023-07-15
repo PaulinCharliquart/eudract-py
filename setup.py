@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="eudract-py",
-    version="1.2.0",
+    version="1.3.0",
     description="Eudract-py is a Python library for searching clinical trials on EUDRACT",
     url="http://github.com/PaulinCharliquart/eudract-py",
     author="Paulin Charliquart",
