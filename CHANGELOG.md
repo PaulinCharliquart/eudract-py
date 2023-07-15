@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.3.0
+
+* Added: new fonction to validate eudract number
+
+* Fixed: return None when eudract number is not valid or not found
+
 ## v1.2.0
 
 * Added:  cache, max results

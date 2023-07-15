@@ -19,11 +19,11 @@ sys.path.insert(0, os.path.abspath("../../"))
 # -- Project information -----------------------------------------------------
 
 project = "eudract-py"
-copyright = "2022, Paulin Charliquart"
+copyright = "2023, Paulin Charliquart"
 author = "Paulin Charliquart"
 
 # The full version, including alpha/beta/rc tags
-release = "1.2.0"
+release = "1.3.0"
 
 
 # -- General configuration ---------------------------------------------------
