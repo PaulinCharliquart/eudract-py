@@ -68,6 +68,4 @@ def validate_id(eudract_id: str):
         eudract_year = int(eudract_id[0:4])
     except ValueError:
         eudract_year = 0
-    if eudract_year not in range(2000, today_year):
-        return False
-    return True
+    return eudract_year in range(2000, today_year)

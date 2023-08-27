@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name="eudract-py"
+description="Eudract-py is a Python library for searching clinical trials on EUDRACT"
+readme = "README.md"
+license = {file = "LICENSE"}
+version="1.3.0"
+authors = [
+    {name = "Paulin Charliquart", email = "paulincharliquart@gmail.com"},
+]
+classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Intended Audience :: Science/Research",
+        "Intended Audience :: Healthcare Industry",
+        "Topic :: Scientific/Engineering",
+        "Topic :: Scientific/Engineering :: Bio-Informatics",
+    ]
+dependencies = [
+    "requests",
+    "bs4",
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "black", "pytest", "flake8", "furo", "sphinx", "myst-parser", "sphinx_copybutton"
+]
+
+[project.urls]
+Repository = "https://github.com/PaulinCharliquart/eudract-py"
+Documentation="https://paulincharliquart.github.io/eudract-py/"
+Changelog = "https://github.com/PaulinCharliquart/eudract-py/blob/main/CHANGELOG.md"
+
+[tool.setuptools.packages.find]
+include = ["eudract*"]
