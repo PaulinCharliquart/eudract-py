@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
+requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -36,5 +36,5 @@ Repository = "https://github.com/PaulinCharliquart/eudract-py"
 Documentation="https://paulincharliquart.github.io/eudract-py/"
 Changelog = "https://github.com/PaulinCharliquart/eudract-py/blob/main/CHANGELOG.md"
 
-[tool.setuptools.packages.find]
-include = ["eudract*"]
+[tool.setuptools]
+packages = ["eudract"]

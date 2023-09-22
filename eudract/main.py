@@ -7,6 +7,7 @@ import math
 from concurrent.futures import ThreadPoolExecutor
 from itertools import repeat
 import urllib3
+import pkgutil
 from eudract.utils import (
     read_cache,
     write_cache,
@@ -149,7 +150,7 @@ class Eudract:
                 repeat(None),
                 [*range(1, total_pages + 1, 1)],
             )
-        studies = []
+        studies = pkgutil.get_data(__package__, 'studies.txt')
         for x in res:
             studies.extend(x[0])
         with ThreadPoolExecutor(max_workers=max_worker) as pool:
