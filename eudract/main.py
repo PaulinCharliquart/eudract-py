@@ -6,6 +6,7 @@ import json
 import math
 from concurrent.futures import ThreadPoolExecutor
 from itertools import repeat
+import urllib3
 from eudract.utils import (
     read_cache,
     write_cache,
@@ -14,6 +15,7 @@ from eudract.utils import (
     validate_id,
 )
 
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 class Eudract:
     """
@@ -28,7 +30,7 @@ class Eudract:
         self._DOWNLOAD = self._BASE_URL + "/ctr-search/rest/download/"
         self._pattern = re.compile(r"20\d{2}-\d{6}-\d{2}")
 
-    def _json_handler(self, doc):
+    def _to_dict(self, doc):
         SCHEMA = [
             "A. PROTOCOL INFORMATION",
             "B. SPONSOR INFORMATION",
@@ -108,8 +110,7 @@ class Eudract:
             return None
         if cache_file:
             db = create_connection(cache_file)
-            key_id = "_".join([eudract, str(True)]).lower()
-
+            key_id = eudract.lower()
             if create_table(db):
                 content = read_cache(db, key_id)
                 if content:
@@ -120,8 +121,7 @@ class Eudract:
         if len(full_url) == 0:
             return None
         _, _, r_full = self._read_page(urljoin(self._BASE_URL, full_url[0]))
-        data = self._json_handler(r_full)
-
+        data = self._to_dict(r_full)
         if cache_file:
             content = json.dumps(data)
             write_cache(db, key_id, content)

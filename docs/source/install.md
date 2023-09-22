@@ -8,10 +8,13 @@ Using pip:
 pip install eudract-py
 ```
 
-## Last version
+## Latest version
 
 ```
 git clone https://github.com/PaulinCharliquart/eudract-py.git
 cd eudract-py
-python setup install dev
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip instal .[dev]
 ```

@@ -13,6 +13,18 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install eudract
 ```pip install eudract-py```
 
 
+To install latest development version:
+
+```
+git clone https://github.com/PaulinCharliquart/eudract-py.git
+cd eudract-py
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip instal .[dev]
+```
+
+
 ## Usage
 
 
@@ -25,11 +37,7 @@ from eudract import Eudract
 
 eu = Eudract()
 
-eu.search("EFC14280", "summary") # return trial summary in plain text format
-
-eu.search("EFC14280", "summary", True) # return trial summary in dict
-
-eu.search("covid", "full", True) # return all trial full details with covid term in array of dict
+eu.search("EFC14280")
 
 ```
 
@@ -41,9 +49,7 @@ from eudract import Eudract
 
 eu = Eudract()
 
-eu.info("2015-001314-10", "summary", False) # return trial summary in plain text format
-
-eu.info("2015-001314-10", "full", True) # return trial full in dict
+eu.fetch_study("2015-001314-10")
 
 ```
 
