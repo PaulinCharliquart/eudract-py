@@ -9,6 +9,7 @@ from urllib.parse import urljoin
 import requests
 from bs4 import BeautifulSoup
 
+from eudract.exceptions import StudyNotFoundError
 from eudract.utils import (
     create_connection,
     create_table,
@@ -116,9 +117,14 @@ class Eudract:
 
         Returns:
             [dict]: dictionary
+
+        Raises:
+            StudyNotFoundError: if the EudraCT number is invalid or not found
         """
         if validate_id(eudract_id=eudract) is False:
-            return None
+            raise StudyNotFoundError(
+                f"Invalid or unsupported EudraCT number: {eudract}"
+            )
         if cache_file:
             db = create_connection(cache_file)
             key_id = eudract.lower()
@@ -130,7 +136,7 @@ class Eudract:
         _, _, text = self._read_page(url=self._SEARCH, query=eudract)
         full_url = re.findall(rf"ctr-search/trial/{eudract}/[A-Z][A-Z]", text)
         if len(full_url) == 0:
-            return None
+            raise StudyNotFoundError(f"No study found for EudraCT number: {eudract}")
         _, _, r_full = self._read_page(urljoin(self._BASE_URL, full_url[0]))
         data = self._to_dict(r_full)
         if cache_file:

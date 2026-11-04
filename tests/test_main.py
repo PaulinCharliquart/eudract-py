@@ -3,7 +3,9 @@ import sqlite3
 import tempfile
 from pathlib import Path
 
-from eudract import Eudract
+import pytest
+
+from eudract import Eudract, StudyNotFoundError
 
 
 def test_search():
@@ -19,8 +21,10 @@ def test_fetch_study():
     eu = Eudract()
     x = eu.fetch_study("2015-001314-10")
     assert json.dumps(x) == Path("tests/data/one_study.json").read_text()
-    assert eu.fetch_study("fake_id") is None
-    assert eu.fetch_study("2021-123456-12") is None
+    with pytest.raises(StudyNotFoundError):
+        eu.fetch_study("fake_id")
+    with pytest.raises(StudyNotFoundError):
+        eu.fetch_study("2021-123456-12")
 
 
 def test_search_cache():
