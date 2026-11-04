@@ -142,6 +142,7 @@ class Eudract:
         total_studies = int(soup.find("span", {"id": "total"}).text)
         page_size = 20
         total_pages = math.ceil(total_studies / page_size)
+        studies = []
         with ThreadPoolExecutor(max_workers=max_worker) as pool:
             res = pool.map(
                 self._read_page,
