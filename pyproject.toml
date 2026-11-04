@@ -27,13 +27,19 @@ dependencies = [
 
 
 [project.optional-dependencies]
-dev = [
+test = [
     "pytest",
     "ruff",
+]
+doc = [
     "furo",
     "sphinx",
     "myst-parser",
     "sphinx_copybutton",
+]
+dev = [
+    "eudract-py[test]",
+    "eudract-py[doc]",
 ]
 
 [project.urls]
