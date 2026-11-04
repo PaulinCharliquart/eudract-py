@@ -1,6 +1,9 @@
-import sqlite3
+import logging
 import re
+import sqlite3
 from datetime import datetime
+
+logger = logging.getLogger(__name__)
 
 
 def create_connection(db_file: str):
@@ -9,7 +12,7 @@ def create_connection(db_file: str):
         conn = sqlite3.connect(db_file)
         return conn
     except sqlite3.Error as e:
-        print(e)
+        logger.error("Failed to connect to %s: %s", db_file, e)
     return conn
 
 
@@ -26,7 +29,7 @@ def create_table(conn):
         cur.execute(q)
         res = True
     except sqlite3.Error as e:
-        print(e)
+        logger.error("Failed to create table: %s", e)
         res = False
     return res
 
@@ -39,7 +42,7 @@ def write_cache(conn, key, data):
         conn.commit()
         res = True
     except sqlite3.Error as e:
-        print(e)
+        logger.error("Failed to write cache for %s: %s", key, e)
         res = False
     return res
 
@@ -51,7 +54,7 @@ def read_cache(conn, key):
         rows = cur.fetchone()
         res = rows[0] if rows else None
     except sqlite3.Error as e:
-        print(e)
+        logger.error("Failed to read cache for %s: %s", key, e)
         res = None
     return res
 
@@ -60,7 +63,7 @@ def validate_id(eudract_id: str):
     """
     Validate Eudract Id
     """
-    test_id = re.match("^20\d{2}-\d{6}-\d{2}$", eudract_id)
+    test_id = re.match(r"^20\d{2}-\d{6}-\d{2}$", eudract_id)
     if test_id is None:
         return False
     today_year = datetime.now().year
@@ -68,6 +71,4 @@ def validate_id(eudract_id: str):
         eudract_year = int(eudract_id[0:4])
     except ValueError:
         eudract_year = 0
-    if eudract_year not in range(2000, today_year):
-        return False
-    return True
+    return eudract_year in range(2000, today_year)

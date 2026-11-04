@@ -13,8 +13,9 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("../../"))
+sys.path.insert(0, os.path.abspath("../../src"))
 
+from eudract import __version__  # noqa: E402
 
 # -- Project information -----------------------------------------------------
 
@@ -23,8 +24,8 @@ copyright = "2023, Paulin Charliquart"
 author = "Paulin Charliquart"
 
 # The full version, including alpha/beta/rc tags
-release = "1.3.0"
-
+release = __version__
+version = __version__
 
 # -- General configuration ---------------------------------------------------
 
@@ -34,6 +35,7 @@ release = "1.3.0"
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
+    "sphinx.ext.intersphinx",
     "myst_parser",
     "sphinx_copybutton",
 ]
@@ -62,4 +64,12 @@ html_static_path = ["_static"]
 source_suffix = {
     ".rst": "restructuredtext",
     ".md": "markdown",
+}
+
+# -- Extension configuration -------------------------------------------------
+
+# sphinx.ext.intersphinx
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+    "requests": ("https://requests.readthedocs.io/en/latest/", None),
 }

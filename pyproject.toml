@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eudract-py"
+description = "Eudract-py is a Python library for searching clinical trials on EUDRACT"
+readme = "README.md"
+license = {file = "LICENSE"}
+dynamic = ["version"]
+authors = [
+    {name = "Paulin Charliquart", email = "paulincharliquart@gmail.com"},
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Healthcare Industry",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+    "requests",
+    "urllib3",
+    "bs4",
+]
+
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "ruff",
+]
+doc = [
+    "furo",
+    "sphinx",
+    "myst-parser",
+    "sphinx_copybutton",
+]
+dev = [
+    "eudract-py[test]",
+    "eudract-py[doc]",
+]
+
+[project.urls]
+Repository = "https://github.com/PaulinCharliquart/eudract-py"
+Documentation = "https://paulincharliquart.github.io/eudract-py/"
+Changelog = "https://github.com/PaulinCharliquart/eudract-py/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+packages = ["eudract"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.dynamic]
+version = {attr = "eudract.__version__"}
+
+[tool.ruff]
+line-length = 88
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

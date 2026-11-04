@@ -1,12 +1,14 @@
+import tempfile
+
+import pytest
+
 from eudract.utils import (
     create_connection,
     create_table,
-    write_cache,
     read_cache,
     validate_id,
+    write_cache,
 )
-import pytest
-import tempfile
 
 
 def test_db_create():
