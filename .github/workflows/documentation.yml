@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'release' && github.event.action == 'published' && github.event.workflow_run.conclusion == 'success' }}
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v7
     - uses: actions/setup-python@v4
       with:
         python-version: "3.x"
@@ -34,7 +34,7 @@ jobs:
     needs: build
     if: ${{ github.event_name == 'release' && github.event.action == 'published' && github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
         with:
          ref: gh-pages
       - uses: actions/download-artifact@v3
