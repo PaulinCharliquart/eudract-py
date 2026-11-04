@@ -2,6 +2,7 @@ import json
 import math
 import re
 from concurrent.futures import ThreadPoolExecutor
+from importlib.metadata import PackageNotFoundError, version
 from itertools import repeat
 from urllib.parse import urljoin
 
@@ -19,6 +20,11 @@ from eudract.utils import (
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+try:
+    _PACKAGE_VERSION = version("eudract-py")
+except PackageNotFoundError:
+    _PACKAGE_VERSION = "unknown"
+
 
 class Eudract:
     """
@@ -28,6 +34,14 @@ class Eudract:
 
     def __init__(self):
         self.session = requests.Session()
+        self.session.headers.update(
+            {
+                "User-Agent": (
+                    f"eudract-py/{_PACKAGE_VERSION} "
+                    "(+https://github.com/PaulinCharliquart/eudract-py)"
+                )
+            }
+        )
         self._BASE_URL = "https://www.clinicaltrialsregister.eu/"
         self._SEARCH = self._BASE_URL + "/ctr-search/search"
         self._DOWNLOAD = self._BASE_URL + "/ctr-search/rest/download/"

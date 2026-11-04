@@ -1,6 +1,9 @@
+import logging
 import re
 import sqlite3
 from datetime import datetime
+
+logger = logging.getLogger(__name__)
 
 
 def create_connection(db_file: str):
@@ -9,7 +12,7 @@ def create_connection(db_file: str):
         conn = sqlite3.connect(db_file)
         return conn
     except sqlite3.Error as e:
-        print(e)
+        logger.error("Failed to connect to %s: %s", db_file, e)
     return conn
 
 
@@ -26,7 +29,7 @@ def create_table(conn):
         cur.execute(q)
         res = True
     except sqlite3.Error as e:
-        print(e)
+        logger.error("Failed to create table: %s", e)
         res = False
     return res
 
@@ -39,7 +42,7 @@ def write_cache(conn, key, data):
         conn.commit()
         res = True
     except sqlite3.Error as e:
-        print(e)
+        logger.error("Failed to write cache for %s: %s", key, e)
         res = False
     return res
 
@@ -51,7 +54,7 @@ def read_cache(conn, key):
         rows = cur.fetchone()
         res = rows[0] if rows else None
     except sqlite3.Error as e:
-        print(e)
+        logger.error("Failed to read cache for %s: %s", key, e)
         res = None
     return res
 
