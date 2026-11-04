@@ -7,7 +7,6 @@ from itertools import repeat
 from urllib.parse import urljoin
 
 import requests
-import urllib3
 from bs4 import BeautifulSoup
 
 from eudract.utils import (
@@ -17,8 +16,6 @@ from eudract.utils import (
     validate_id,
     write_cache,
 )
-
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 try:
     _PACKAGE_VERSION = version("eudract-py")
@@ -75,7 +72,7 @@ class Eudract:
         return data
 
     def _read_page(self, url: str, query: str = None, page: int = None):
-        r = self.session.get(url, params={"query": query, "page": page}, verify=False)
+        r = self.session.get(url, params={"query": query, "page": page})
         r.raise_for_status()
         ids = list(set(self._pattern.findall(r.text)))
         next_page = re.findall(
