@@ -1,22 +1,24 @@
-import requests
-import re
-from urllib.parse import urljoin
-from bs4 import BeautifulSoup
 import json
 import math
+import re
 from concurrent.futures import ThreadPoolExecutor
 from itertools import repeat
+from urllib.parse import urljoin
+
+import requests
 import urllib3
-import pkgutil
+from bs4 import BeautifulSoup
+
 from eudract.utils import (
-    read_cache,
-    write_cache,
     create_connection,
     create_table,
+    read_cache,
     validate_id,
+    write_cache,
 )
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 class Eudract:
     """
@@ -48,15 +50,12 @@ class Eudract:
         field_id = [i.text.strip() for i in soup.find_all("td", class_="first")]
         field_name = [i.text.strip() for i in soup.find_all("td", class_="second")]
         field_value = [i.text.strip() for i in soup.find_all("td", class_="third")]
-        res = {
-            "{}:{}".format(i, j): k
-            for i, j, k in zip(field_id, field_name, field_value)
-        }
+        res = {f"{i}:{j}": k for i, j, k in zip(field_id, field_name, field_value)}
         for k in data.keys():
             data[k] = {
                 key: res[key]
                 for key in res.keys()
-                if bool(re.search("^{}[.]".format(k[0]), key))
+                if bool(re.search(f"^{k[0]}[.]", key))
             }
 
         return data
@@ -118,7 +117,7 @@ class Eudract:
                     data = json.loads(content)
                     return data
         _, _, text = self._read_page(url=self._SEARCH, query=eudract)
-        full_url = re.findall(r"ctr-search/trial/{}/[A-Z][A-Z]".format(eudract), text)
+        full_url = re.findall(rf"ctr-search/trial/{eudract}/[A-Z][A-Z]", text)
         if len(full_url) == 0:
             return None
         _, _, r_full = self._read_page(urljoin(self._BASE_URL, full_url[0]))
@@ -150,7 +149,6 @@ class Eudract:
                 repeat(None),
                 [*range(1, total_pages + 1, 1)],
             )
-        studies = pkgutil.get_data(__package__, 'studies.txt')
         for x in res:
             studies.extend(x[0])
         with ThreadPoolExecutor(max_workers=max_worker) as pool:
