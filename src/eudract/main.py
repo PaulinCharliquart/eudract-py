@@ -8,6 +8,8 @@ from urllib.parse import urljoin
 
 import requests
 from bs4 import BeautifulSoup
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from eudract.exceptions import StudyNotFoundError
 from eudract.utils import (
@@ -30,7 +32,7 @@ class Eudract:
     This class provides methods to search for and retrieve information about clinical trials.
     """
 
-    def __init__(self):
+    def __init__(self, timeout: tuple = (10, 30), max_retries: int = 3):
         self.session = requests.Session()
         self.session.headers.update(
             {
@@ -40,6 +42,19 @@ class Eudract:
                 )
             }
         )
+        if max_retries > 0:
+            retry = Retry(
+                total=max_retries,
+                connect=max_retries,
+                read=max_retries,
+                backoff_factor=0.5,
+                status_forcelist=[429, 500, 502, 503, 504],
+                allowed_methods=["GET"],
+            )
+            adapter = HTTPAdapter(max_retries=retry)
+            self.session.mount("https://", adapter)
+            self.session.mount("http://", adapter)
+        self._timeout = timeout
         self._BASE_URL = "https://www.clinicaltrialsregister.eu/"
         self._SEARCH = self._BASE_URL + "/ctr-search/search"
         self._DOWNLOAD = self._BASE_URL + "/ctr-search/rest/download/"
@@ -73,7 +88,9 @@ class Eudract:
         return data
 
     def _read_page(self, url: str, query: str = None, page: int = None):
-        r = self.session.get(url, params={"query": query, "page": page})
+        r = self.session.get(
+            url, params={"query": query, "page": page}, timeout=self._timeout
+        )
         r.raise_for_status()
         ids = list(set(self._pattern.findall(r.text)))
         next_page = re.findall(
@@ -150,9 +167,10 @@ class Eudract:
 
         Args:
             cache_file (str): Set cache filename to save results to sqlite db
+            max_worker (int): Maximum number of worker threads
 
         Returns:
-            [dict]: dictionary
+            [dict]: list of dictionary
         """
         _, _, text = self._read_page(url=self._SEARCH)
         soup = BeautifulSoup(text, "html.parser")
@@ -169,6 +187,13 @@ class Eudract:
             )
         for x in res:
             studies.extend(x[0])
+
+        def _fetch(eudract_id):
+            try:
+                return self.fetch_study(eudract_id, cache_file)
+            except StudyNotFoundError:
+                return None
+
         with ThreadPoolExecutor(max_workers=max_worker) as pool:
-            data = pool.map(self.fetch_study, studies)
+            data = [d for d in pool.map(_fetch, studies) if d is not None]
         return data
