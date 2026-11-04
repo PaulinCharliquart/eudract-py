@@ -1,8 +1,9 @@
-from eudract import Eudract
-import tempfile
-import sqlite3
 import json
+import sqlite3
+import tempfile
 from pathlib import Path
+
+from eudract import Eudract
 
 
 def test_search():

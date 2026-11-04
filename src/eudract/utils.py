@@ -1,5 +1,5 @@
-import sqlite3
 import re
+import sqlite3
 from datetime import datetime
 
 
@@ -60,7 +60,7 @@ def validate_id(eudract_id: str):
     """
     Validate Eudract Id
     """
-    test_id = re.match("^20\d{2}-\d{6}-\d{2}$", eudract_id)
+    test_id = re.match(r"^20\d{2}-\d{6}-\d{2}$", eudract_id)
     if test_id is None:
         return False
     today_year = datetime.now().year
